@@ -1,0 +1,13 @@
+>>> Warning 203 "P8_P9.c" Line 148(1,1): Condition always TRUE
+>>> Warning 203 "P8_P9.c" Line 295(1,1): Condition always TRUE
+>>> Warning 216 "P8_P9.c" Line 331(4,5): Interrupts disabled during call to prevent re-entrancy:  (lcd_putc)
+>>> Warning 216 "P8_P9.c" Line 331(4,5): Interrupts disabled during call to prevent re-entrancy:  (@delay_ms1)
+>>> Warning 216 "P8_P9.c" Line 331(4,5): Interrupts disabled during call to prevent re-entrancy:  (lcd_init)
+>>> Warning 216 "P8_P9.c" Line 331(4,5): Interrupts disabled during call to prevent re-entrancy:  (@PSTRINGCN_9600_31766_31767)
+>>> Warning 216 "P8_P9.c" Line 331(4,5): Interrupts disabled during call to prevent re-entrancy:  (lcd_gotoxy)
+>>> Warning 216 "P8_P9.c" Line 331(4,5): Interrupts disabled during call to prevent re-entrancy:  (@PSTRINGCN_1059)
+>>> Warning 202 "P8_P9.c" Line 21(30,34): Variable never used:   flag
+>>> Warning 202 "P8_P9.c" Line 22(9,15): Variable never used:   opcion
+      Memory usage:   ROM=27%      RAM=2% - 5%
+      0 Errors,  10 Warnings.
+Build Successful.

@@ -1,0 +1,55 @@
+[PROJECT]
+Target=P8_P9.hex
+Processor_Text=PIC18F4550
+CCSVersion=5.025
+Compiler=PCH
+[Target Data]
+FileList=P8_P9.c
+[P8_P9.c]
+Type=4
+[mru-list]
+1=P8_P9.c
+
+[ProjectLog]
+Days=3
+D1=01-12-2023
+D1_L=11
+D1_L1=[42066]Started Editing.
+D1_L2=[42394]Stopped Editing.
+D1_L3=[43370]Started Editing.
+D1_L4=[43517]Stopped Editing.
+TotalEdit=35
+TotalDebug=0
+D1_E=25
+D1_D=0
+D1_L5=[43517]Project Closed.
+D1_L6=[44257]Project Opened.
+D1_L7=[44389]Started Editing.
+D1_L8=[45696]Stopped Editing.
+D1_L9=[45696]Project Closed.
+D1_L10=[45776]Project Opened.
+D1_L11=[70000]Project Closed.
+D2=03-12-2023
+D2_L=5
+D2_L1=[43522]Project Opened.
+D2_L2=[45363]Started Editing.
+D2_L3=[45667]Stopped Editing.
+D2_L4=[46053]Started Editing.
+D2_L5=[46574]Stopped Editing.
+D3=06-12-2023
+D3_L=5
+D3_L1=[38789]Started Editing.
+D3_L2=[39173]Stopped Editing.
+D3_L3=[39255]Started Editing.
+D3_L4=[39834]Stopped Editing.
+D3_E=10
+D3_D=0
+D3_L5=[45588]Project Closed.
+
+[Opened Files]
+1=P8_P9.c
+2=C:\Program Files (x86)\PICC\Devices\18F4550.h
+3=
+[Units]
+Count=1
+1=P8_P9 (main)

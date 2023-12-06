@@ -1,0 +1,419 @@
+#include <18F4550.h>
+#device ADC=10
+#include <usb_bootloader.h>
+#include <time.h>
+#include <stdlib.h>
+#include <lcd.c>
+
+#fuses HS,NOWDT,NOPROTECT,NOLVP
+#define cuenta 15536
+#include <time.h>
+#include <stdlib.h>
+#use Delay(Clock=20M)
+
+#use rs232(baud=9600,xmit=PIN_C6,rcv=PIN_C7)
+
+// Declaración de funciones
+void rota(int ciclos);
+void semaforo(int ciclosdos);
+void menuderotas(void);
+void tempvolt(void);
+void invernadero(void);
+void controlmanualinv(void);
+
+// Declaración de variables
+int *ptr, aux=0, contador=0, flag=0, seg=-1, min=-1, hr=-1;
+char opcion='7';
+char tecla='0';
+
+// Interrupciones
+
+// Interrupcion teclado
+#INT_RB
+void intext_isr() {
+    OUTPUT_LOW(PIN_B2);  // Fila1
+    OUTPUT_HIGH(PIN_B3);  // Fila2
+    OUTPUT_HIGH(PIN_B4);  // fila3
+
+    if(INPUT(PIN_B5)== 0) {
+        tecla= '1';
+    }
+    if(INPUT(PIN_B6)== 0) {
+        tecla= '2';
+    }
+    if(INPUT(PIN_B7)== 0) {
+        tecla= '3';
+    }
+
+    OUTPUT_HIGH(PIN_B2);  // Fila1
+    OUTPUT_LOW(PIN_B3);  // Fila2
+    OUTPUT_HIGH(PIN_B4);  // fila3
+    if(INPUT(PIN_B5)== 0) {
+        tecla= '4';
+    }
+    if(INPUT(PIN_B6)== 0) {
+        tecla= '5';
+    }
+    if(INPUT(PIN_B7)== 0) {
+        tecla= '6';
+    }
+
+    OUTPUT_HIGH(PIN_B2);  // Fila1
+    OUTPUT_HIGH(PIN_B3);  // Fila2
+    OUTPUT_LOW(PIN_B4);  // fila3
+    if(INPUT(PIN_B5)== 0) {
+        tecla= '7';
+    }
+    if(INPUT(PIN_B6)== 0) {
+        tecla= '8';
+    }
+    if(INPUT(PIN_B7)== 0) {
+        tecla= '9';
+    }
+
+    printf("Tecla= %c\r\n", tecla);
+    delay_ms(1000);
+    aux= INPUT_b(); // Limpiamos la bandera RBIF
+    OUTPUT_LOW(PIN_B2);  // Fila1
+    OUTPUT_LOW(PIN_B3);  // Fila2
+    OUTPUT_LOW(PIN_B4);  // fila3
+}
+
+// INTERRUPCION RELOJ
+#INT_RTCC
+void clock_isr() {
+    set_timer0(cuenta);
+    contador=contador+1;
+    if(contador>4) {
+        contador=0;
+        seg++;
+        if(seg==60) {
+            seg=0;
+            min++;
+            if(min==60) {
+                min=0;
+                hr++;
+                if(hr==24) {
+                    hr=0;
+                }
+            }
+        }
+        lcd_init();
+        lcd_gotoxy(2,2);
+        printf(lcd_putc,"\fReloj %d :%d :%d", hr, min, seg);
+    }
+}
+
+// AJUSTE RELOJ
+#INT_EXT
+void intext_isr2() {
+    hr++;
+    if(hr==24) {
+        hr=0;
+    }
+}
+
+#INT_EXT1
+void intext_isr3() {
+    min++;
+    if(min>60) {
+        min=0;
+        hr++;
+    }
+}
+
+void main(void) {
+    set_tris_d(0x00);
+    set_tris_b(0x0F0);
+    set_tris_c(0x0F0);
+    PORT_B_PULLUPS(TRUE);
+    ENABLE_INTERRUPTS(GLOBAL | INT_RB);
+    SETUP_TIMER_0(RTCC_INTERNAL | RTCC_DIV_16);
+    SET_TIMER0(cuenta);
+    EXT_INT_EDGE(H_TO_L);
+    ENABLE_INTERRUPTS(INT_EXT);
+    ENABLE_INTERRUPTS(INT_EXT1);
+    OUTPUT_LOW(PIN_B2);  // Fila1
+    OUTPUT_LOW(PIN_B3);  // Fila2
+    OUTPUT_LOW(PIN_B4);  // fila3
+
+    // TEMP/VOLT
+    setup_adc(ADC_CLOCK_DIV_8);
+    setup_adc_ports(AN0_TO_AN1);
+    setup_adc(ADC_CLOCK_INTERNAL);
+    delay_ms(100);
+    printf("\r\nINSTRUMENTRACION.\r");
+    printf("\r\n1-Opcion 1 (Invernadero)\r");
+    printf("\r\n2.-Opcion 2 (Control manual invernadero)\r");
+    printf("\r\n3.-Opcion 3 (Reloj)");
+    printf("\r\nElige la opcion que deseas ");
+    while(1) {
+        if(kbhit()!=0) {
+            printf("\r\nINSTRUMENTACION\r");
+            printf("\r\n1.-Opcion 1 (Invernadero)\r");
+            printf("\r\n2.-Opcion 2 (Control manual invernadero)\r");
+            printf("\r\n3.-Opcion 3 (Reloj)");
+            printf("\r\nElige la opcion que deseas ");
+            tecla=getch();
+        }
+        switch(tecla) {
+            case '1':
+                DISABLE_INTERRUPTS(INT_TIMER0);
+                ptr=&invernadero;
+                invernadero();
+                delay_ms(200);
+                break;
+            case '2':
+                DISABLE_INTERRUPTS(INT_TIMER0);
+                ptr=&controlmanualinv;
+                controlmanualinv();
+                delay_ms(200);
+                break;
+            case '3':
+                ENABLE_INTERRUPTS(INT_TIMER0);
+                delay_ms(500);
+                break;
+        }
+    }
+}
+
+// Invernadero automatico
+void invernadero() {
+    long int longdato;
+    float x;
+    float y;
+    float valor;
+    delay_ms(100);
+    lcd_init();
+    output_low(PIN_A3); // VENTILADOR
+    output_low(PIN_A4); // CALEFACTOR
+    output_low(PIN_A5); // BOMBA
+    set_adc_channel(0);
+    delay_ms(10);
+    longdato= read_adc();
+    delay_us(20);
+    x= ((((float)longdato*5.0)/1023))*100;
+    printf("Grados= %.1f\r", x);
+    lcd_gotoxy(1,1);
+    printf(lcd_putc,"Grados= %.1f\r", x);
+    set_adc_channel(1);
+    delay_ms(10);
+    valor=read_adc();
+    delay_us(20);
+    y=read_adc();
+    delay_us(20);
+    y=(-0.17*valor)+171.4;
+    y=y-15;
+    lcd_gotoxy(1,2);
+    printf("Humedad= %.1f\r", y);
+   
+#include <18F4550.h>
+#device ADC=10
+#include <usb_bootloader.h>
+#include <time.h>
+#include <stdlib.h>
+#include <lcd.c>
+
+#fuses HS,NOWDT,NOPROTECT,NOLVP
+#define cuenta 15536
+#include <time.h>
+#include <stdlib.h>
+#use Delay(Clock=20M)
+
+#use rs232(baud=9600,xmit=PIN_C6,rcv=PIN_C7)
+
+// Declaración de funciones
+void rota(int ciclos);
+void semaforo(int ciclosdos);
+void menuderotas(void);
+void tempvolt(void);
+void invernadero(void);
+void controlmanualinv(void);
+
+// Declaración de variables
+int *ptr, aux=0, contador=0, flag=0, seg=-1, min=-1, hr=-1;
+char opcion='7';
+char tecla='0';
+
+// Interrupciones
+
+// Interrupcion teclado
+#INT_RB
+void intext_isr() {
+    OUTPUT_LOW(PIN_B2);  // Fila1
+    OUTPUT_HIGH(PIN_B3);  // Fila2
+    OUTPUT_HIGH(PIN_B4);  // fila3
+
+    if(INPUT(PIN_B5)== 0) {
+        tecla= '1';
+    }
+    if(INPUT(PIN_B6)== 0) {
+        tecla= '2';
+    }
+    if(INPUT(PIN_B7)== 0) {
+        tecla= '3';
+    }
+
+    OUTPUT_HIGH(PIN_B2);  // Fila1
+    OUTPUT_LOW(PIN_B3);  // Fila2
+    OUTPUT_HIGH(PIN_B4);  // fila3
+    if(INPUT(PIN_B5)== 0) {
+        tecla= '4';
+    }
+    if(INPUT(PIN_B6)== 0) {
+        tecla= '5';
+    }
+    if(INPUT(PIN_B7)== 0) {
+        tecla= '6';
+    }
+
+    OUTPUT_HIGH(PIN_B2);  // Fila1
+    OUTPUT_HIGH(PIN_B3);  // Fila2
+    OUTPUT_LOW(PIN_B4);  // fila3
+    if(INPUT(PIN_B5)== 0) {
+        tecla= '7';
+    }
+    if(INPUT(PIN_B6)== 0) {
+        tecla= '8';
+    }
+    if(INPUT(PIN_B7)== 0) {
+        tecla= '9';
+    }
+
+    printf("Tecla= %c\r\n", tecla);
+    delay_ms(1000);
+    aux= INPUT_b(); // Limpiamos la bandera RBIF
+    OUTPUT_LOW(PIN_B2);  // Fila1
+    OUTPUT_LOW(PIN_B3);  // Fila2
+    OUTPUT_LOW(PIN_B4);  // fila3
+}
+
+// INTERRUPCION RELOJ
+#INT_RTCC
+void clock_isr() {
+    set_timer0(cuenta);
+    contador=contador+1;
+    if(contador>4) {
+        contador=0;
+        seg++;
+        if(seg==60) {
+            seg=0;
+            min++;
+            if(min==60) {
+                min=0;
+                hr++;
+                if(hr==24) {
+                    hr=0;
+                }
+            }
+        }
+        lcd_init();
+        lcd_gotoxy(2,2);
+        printf(lcd_putc,"\fReloj %d :%d :%d", hr, min, seg);
+    }
+}
+
+// AJUSTE RELOJ
+#INT_EXT
+void intext_isr2() {
+    hr++;
+    if(hr==24) {
+        hr=0;
+    }
+}
+
+#INT_EXT1
+void intext_isr3() {
+    min++;
+    if(min>60) {
+        min=0;
+        hr++;
+    }
+}
+
+void main(void) {
+    set_tris_d(0x00);
+    set_tris_b(0x0F0);
+    set_tris_c(0x0F0);
+    PORT_B_PULLUPS(TRUE);
+    ENABLE_INTERRUPTS(GLOBAL | INT_RB);
+    SETUP_TIMER_0(RTCC_INTERNAL | RTCC_DIV_16);
+    SET_TIMER0(cuenta);
+    EXT_INT_EDGE(H_TO_L);
+    ENABLE_INTERRUPTS(INT_EXT);
+    ENABLE_INTERRUPTS(INT_EXT1);
+    OUTPUT_LOW(PIN_B2);  // Fila1
+    OUTPUT_LOW(PIN_B3);  // Fila2
+    OUTPUT_LOW(PIN_B4);  // fila3
+
+    // TEMP/VOLT
+    setup_adc(ADC_CLOCK_DIV_8);
+    setup_adc_ports(AN0_TO_AN1);
+    setup_adc(ADC_CLOCK_INTERNAL);
+    delay_ms(100);
+    printf("\r\nINSTRUMENTRACION.\r");
+    printf("\r\n1-Opcion 1 (Invernadero)\r");
+    printf("\r\n2.-Opcion 2 (Control manual invernadero)\r");
+    printf("\r\n3.-Opcion 3 (Reloj)");
+    printf("\r\nElige la opcion que deseas ");
+    while(1) {
+        if(kbhit()!=0) {
+            printf("\r\nINSTRUMENTACION\r");
+            printf("\r\n1.-Opcion 1 (Invernadero)\r");
+            printf("\r\n2.-Opcion 2 (Control manual invernadero)\r");
+            printf("\r\n3.-Opcion 3 (Reloj)");
+            printf("\r\nElige la opcion que deseas ");
+            tecla=getch();
+        }
+        switch(tecla) {
+            case '1':
+                DISABLE_INTERRUPTS(INT_TIMER0);
+                ptr=&invernadero;
+                invernadero();
+                delay_ms(200);
+                break;
+            case '2':
+                DISABLE_INTERRUPTS(INT_TIMER0);
+                ptr=&controlmanualinv;
+                controlmanualinv();
+                delay_ms(200);
+                break;
+            case '3':
+                ENABLE_INTERRUPTS(INT_TIMER0);
+                delay_ms(500);
+                break;
+        }
+    }
+}
+
+// Invernadero automatico
+void invernadero() {
+    long int longdato;
+    float x;
+    float y;
+    float valor;
+    delay_ms(100);
+    lcd_init();
+    output_low(PIN_A3); // VENTILADOR
+    output_low(PIN_A4); // CALEFACTOR
+    output_low(PIN_A5); // BOMBA
+    set_adc_channel(0);
+    delay_ms(10);
+    longdato= read_adc();
+    delay_us(20);
+    x= ((((float)longdato*5.0)/1023))*100;
+    printf("Grados= %.1f\r", x);
+    lcd_gotoxy(1,1);
+    printf(lcd_putc,"Grados= %.1f\r", x);
+    set_adc_channel(1);
+    delay_ms(10);
+    valor=read_adc();
+    delay_us(20);
+    y=read_adc();
+    delay_us(20);
+    y=(-0.17*valor)+171.4;
+    y=y-15;
+    lcd_gotoxy(1,2);
+    printf("Humedad= %.1f\r", y);
+}   
+

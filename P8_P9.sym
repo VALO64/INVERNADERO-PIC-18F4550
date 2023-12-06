@@ -1,0 +1,278 @@
+000     @SCRATCH
+000     @MEMSET.P1
+001     @SCRATCH
+001-002 @MEMSET.P1
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @INTERRUPT_AREA
+005     @INTERRUPT_AREA
+006     @INTERRUPT_AREA
+007     @INTERRUPT_AREA
+008     @INTERRUPT_AREA
+009     @INTERRUPT_AREA
+00A     @INTERRUPT_AREA
+00B     @INTERRUPT_AREA
+00C     @INTERRUPT_AREA
+00D     @INTERRUPT_AREA
+00E     @INTERRUPT_AREA
+00F     @INTERRUPT_AREA
+010     @INTERRUPT_AREA
+011     @INTERRUPT_AREA
+012     @INTERRUPT_AREA
+013     @INTERRUPT_AREA
+014     @INTERRUPT_AREA
+015     @INTERRUPT_AREA
+016     @INTERRUPT_AREA
+017     @INTERRUPT_AREA
+018     @INTERRUPT_AREA
+019     @INTERRUPT_AREA
+01A-01B __DYNAMIC_HEAD
+01C-01D strtok.save
+01E-021 _Randseed
+022-023 ptr
+024     aux
+025     contador
+026     flag
+027     seg
+028     min
+029     hr
+02A     opcion
+02B     tecla
+02C-02D invernadero.longdato
+02C     MAIN.@SCRATCH1
+02C     @PSTRINGC_9600_31766_31767.@SCRATCH1
+02C     controlmanualinv.@SCRATCH1
+02D     @PSTRINGC_9600_31766_31767.@SCRATCH2
+02E-031 invernadero.x
+032-035 invernadero.y
+036-039 invernadero.valor
+03A-03D @PRINTF_L32D_1059FPFPF.P1
+03A-03D @PRINTF_L32D_9600_31766_31767FPFPF.P2
+03A-03D @FLT.P3
+03A-03B @ITOF.P4
+03A     invernadero.@SCRATCH1
+03B     invernadero.@SCRATCH2
+03C     invernadero.@SCRATCH3
+03D     invernadero.@SCRATCH4
+03E     @PRINTF_L32D_9600_31766_31767FPFPF.P1
+03E     @PRINTF_L32D_1059FPFPF.P2
+03E-041 @ADDFF.P3
+03E-041 @FLT.P4
+03E-041 @DIVFF.P5
+03F     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH1
+03F     @PRINTF_L32D_1059FPFPF.@SCRATCH1
+040     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH2
+040     @PRINTF_L32D_1059FPFPF.@SCRATCH2
+041     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH3
+041     @PRINTF_L32D_1059FPFPF.@SCRATCH3
+042-045 @DIVFF.P1
+042-045 @ADDFF.P2
+042     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH4
+042     @PRINTF_L32D_1059FPFPF.@SCRATCH4
+042     @FLT.@SCRATCH1
+043     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH5
+043     @PRINTF_L32D_1059FPFPF.@SCRATCH5
+043     @FLT.@SCRATCH2
+044     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH6
+044     @PRINTF_L32D_1059FPFPF.@SCRATCH6
+045     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH7
+045     @PRINTF_L32D_1059FPFPF.@SCRATCH7
+046     @ADDFF.@SCRATCH1
+046     @DIVFF.@SCRATCH1
+046     @PRINTF_L32D_9600_31766_31767FPFPF.@SCRATCH8
+046     @PRINTF_L32D_1059FPFPF.@SCRATCH8
+047-04A @DIV3232.P1
+047-04A @FTOSD.P2
+047-04A @MULFF.P3
+047     @ADDFF.@SCRATCH2
+047     @DIVFF.@SCRATCH2
+048     @ADDFF.@SCRATCH3
+048     @DIVFF.@SCRATCH3
+049     @ADDFF.@SCRATCH4
+049     @DIVFF.@SCRATCH4
+04A     @ADDFF.@SCRATCH5
+04A     @DIVFF.@SCRATCH5
+04B-04E @MULFF.P1
+04B-04E @DIV3232.P2
+04B     @ADDFF.@SCRATCH6
+04B     @DIVFF.@SCRATCH6
+04B     @FTOSD.@SCRATCH1
+04C     @ADDFF.@SCRATCH7
+04D     @ADDFF.@SCRATCH8
+04F     @MULFF.@SCRATCH1
+04F     @DIV3232.@SCRATCH1
+050     @MULFF.@SCRATCH2
+050     @DIV3232.@SCRATCH2
+051     @MULFF.@SCRATCH3
+051     @DIV3232.@SCRATCH3
+052     @DIV3232.@SCRATCH4
+053     @DIV3232.@SCRATCH5
+054     lcd_init.i
+054     @PSTRINGCN_1059.P1
+054     @PRINTF_D_1059.P2
+054     @PSTRINGCN_9600_31766_31767.P3
+054     intext_isr.@SCRATCH1
+055-058 lcd_init.LCD_INIT_STRING
+055     @PRINTF_D_1059.P1
+055     @PSTRINGCN_9600_31766_31767.@SCRATCH1
+055     @PSTRINGCN_1059.@SCRATCH1
+056     @PSTRINGCN_9600_31766_31767.@SCRATCH2
+056     @PSTRINGCN_1059.@SCRATCH2
+056     @PRINTF_D_1059.@SCRATCH1
+057     @PRINTF_D_1059.@SCRATCH2
+058     @PRINTF_D_1059.@SCRATCH3
+059     lcd_init.@SCRATCH1
+059     @PRINTF_D_1059.@SCRATCH4
+05A     lcd_putc.c
+05A     @DIV88.P1
+05B     @delay_ms1.P1
+05B     lcd_gotoxy.x
+05B     @DIV88.P1
+05C     lcd_gotoxy.y
+05C     @DIV88.@SCRATCH1
+05D     lcd_gotoxy.address
+05E     lcd_gotoxy.@SCRATCH1
+05F     lcd_send_byte.address
+060     lcd_send_byte.n
+061     lcd_read_byte.low
+061     lcd_send_byte.@SCRATCH1
+062     lcd_read_byte.high
+062     lcd_send_nibble.n
+063     lcd_read_byte.@SCRATCH1
+F83     PSP_DATA
+F83     lcd
+F8C     lcdlat
+F95     lcdtris
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2
+FBB     CCP_2_LOW
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @MEMSET.P1
+FE9-FEA @READ_PROGRAM_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P3
+FE9-FEA @READ_PACKED_MEMORY.P4
+FE9-FEA @WRITE_PACKED_MEMORY.P5
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0020D2  @PSTRINGCN_9600_31766_31767
+0020F2  @delay_ms1
+002118  intext_isr
+0021E2  @const1089.call
+0021EE  lcd_send_nibble
+002210  lcd_read_nibble
+00221C  lcd_read_byte
+00225C  lcd_send_byte
+002296  lcd_init
+00230C  lcd_gotoxy
+00232E  lcd_putc
+00237E  @PSTRINGCN_1059
+00239C  @DIV88
+0023C4  @PRINTF_D_1059
+00246E  clock_isr
+0024F4  @const1093.call
+002506  intext_isr2
+002516  intext_isr3
+002528  @const1107.call
+00253E  @const1109.call
+00255A  @const1110.call
+002586  @const1111.call
+00259C  @const1112.call
+0025BA  @const1113.call
+0025CE  @const1114.call
+0025EC  @const1115.call
+002618  @const1116.call
+00262E  @const1117.call
+00264C  @const1122.call
+00265A  @const1131.call
+002668  @const1135.call
+002678  @const1136.call
+002688  @const1140.call
+002696  @const1141.call
+0026A4  @const1142.call
+0026B4  @const1143.call
+0026C4  @const1144.call
+0026D2  @const1145.call
+0026E0  @const1146.call
+0026F0  @const1147.call
+002700  @const1148.call
+00270E  @const1149.call
+00271C  @const1150.call
+00272C  @const1151.call
+00273C  @const1152.call
+00275A  @const1153.call
+00276C  @const1154.call
+00277E  @const1155.call
+00278A  @const1156.call
+0027A2  @const1157.call
+0027BA  @const1158.call
+0027CC  @const1159.call
+0027D8  @const1160.call
+0027F2  @PSTRINGC_9600_31766_31767
+002814  @ITOF
+00284A  @MULFF
+00293C  @DIVFF
+002A96  @ADDFF
+002D00  @FTOSD
+002D3E  @DIV3232
+002DCC  @PRINTF_L32D_9600_31766_31767FPFPF
+002F4C  @PRINTF_L32D_1059FPFPF
+0030FC  @FLT
+003172  invernadero
+003FFC  controlmanualinv
+0040E4  @goto12472
+00410E  MAIN
+00410E  @cinit1
+004146  @cinit2
+0136  StrtoulGO
+0136  StrtolGO
+
+Project Directory:
+    D:\Oscar\TEC\Octavo_Semestre\Instrumentacion\P8_P9\
+
+Project Files:
+    P8_P9.c                                                 [06-dic.-23 10:58  CRC=D45D3F6A]
+    C:\Program Files (x86)\PICC\Devices\18F4550.h           [18-abr.-14 16:57  CRC=68697302]
+    C:\Program Files (x86)\PICC\Drivers\usb_bootloader.h    [09-oct.-13 13:43  CRC=173DC191]
+    C:\Program Files (x86)\PICC\Drivers\time.h              [28-ago.-12 11:05  CRC=A57CC8AD]
+    C:\Program Files (x86)\PICC\Drivers\stdlibm.h           [24-feb.-12 09:58  CRC=9523303D]
+    C:\Program Files (x86)\PICC\Drivers\stddef.h            [16-jul.-10 09:27  CRC=897CEC6C]
+    C:\Program Files (x86)\PICC\Drivers\memmgmt.c           [24-feb.-12 09:47  CRC=E82E24A3]
+    C:\Program Files (x86)\PICC\Drivers\stdlib.h            [08-jun.-11 14:39  CRC=0B6669CF]
+    C:\Program Files (x86)\PICC\Drivers\string.h            [10-abr.-14 09:04  CRC=662B2714]
+    C:\Program Files (x86)\PICC\Drivers\ctype.h             [03-ene.-08 13:55  CRC=2D1F019F]
+    C:\Program Files (x86)\PICC\Drivers\lcd.c               [19-sep.-13 15:38  CRC=D1A6378A]
+
+Source signature=424C7F8C
+
+Units:
+    P8_P9 (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+    Compile Mode:       CCS5
+
+Output Files:
+    XREF file:   P8_P9.xsym
+    Errors:      P8_P9.err
+    Ext Symbols: P8_P9.esym
+    INHX32:      P8_P9.hex
+    Symbols:     P8_P9.sym
+    List:        P8_P9.lst
+    Debug/COFF:  P8_P9.cof
+    Project:     P8_P9.ccspjt
+    Call Tree:   P8_P9.tre
+    Statistics:  P8_P9.STA
